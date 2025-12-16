@@ -7,10 +7,11 @@
     <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
-    <link rel="manifest" href="icons/site.webmanifest">
+    <link rel="manifest" href="manifest.json">
     <link rel="shortcut icon" href="icons/favicon.ico">
     <link rel="stylesheet" href="css/style.css">
     <meta name="theme-color" content="#111827">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
@@ -21,19 +22,51 @@
         <div class="mode-selector">
             <button id="btnDynamic" class="mode-btn active">Dinámica</button>
             <button id="btnStatic" class="mode-btn">Estática</button>
-            <button id="btnTheme" class="btn-clear" type="button">Modo oscuro</button>
-            <div class="lang-control">
-              <div class="dropdown" id="langDropdown">
-                <button id="langBtn" type="button" aria-haspopup="listbox" aria-expanded="false">Español</button>
-                <ul id="langMenu" role="listbox" tabindex="-1" aria-label="Idioma" class="hidden">
-                  <li role="option" data-lang="es" aria-selected="true" tabindex="-1">Español</li>
-                  <li role="option" data-lang="en" aria-selected="false" tabindex="-1">English</li>
-                </ul>
-              </div>
-              <select id="langSelect" class="visually-hidden" aria-hidden="true">
-                <option value="es" selected>Español</option>
-                <option value="en">English</option>
-              </select>
+            
+            <!-- Settings Gear Icon -->
+            <div class="settings-control">
+                <button id="btnSettings" class="settings-btn" type="button" aria-label="Configuraciones" aria-expanded="false">
+                    <svg class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                        <path fill="currentColor" d="M12 15.5A3.5 3.5 0 0 1 8.5 12A3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.53c.04-.32.07-.64.07-.97s-.03-.66-.07-1l2.11-1.63c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.31-.61-.22l-2.49 1c-.52-.39-1.06-.73-1.69-.98l-.37-2.65A.506.506 0 0 0 14 2h-4c-.25 0-.46.18-.5.42l-.37 2.65c-.63.25-1.17.59-1.69.98l-2.49-1c-.22-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64L4.57 11c-.04.34-.07.66-.07 1s.03.65.07.97l-2.11 1.66c-.19.15-.25.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1.01c.52.4 1.06.74 1.69.99l.37 2.65c.04.24.25.42.5.42h4c.25 0 .46-.18.5-.42l.37-2.65c.63-.26 1.17-.59 1.69-.99l2.49 1.01c.22.08.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.66Z"/>
+                    </svg>
+                </button>
+                
+                <!-- Settings Panel -->
+                <div id="settingsPanel" class="settings-panel hidden">
+                    <div class="settings-header">
+                        <h3 id="settingsTitle">Configuraciones</h3>
+                    </div>
+                    <div class="settings-content">
+                        <!-- Theme Control -->
+                        <div class="settings-section">
+                            <label id="labelTheme" class="settings-label">Tema:</label>
+                            <div class="theme-toggle">
+                                <input type="checkbox" id="themeToggle" class="theme-toggle-input">
+                                <label for="themeToggle" class="theme-toggle-label">
+                                    <span class="theme-toggle-button"></span>
+                                    <span class="theme-light" id="themeLightText">Claro</span>
+                                    <span class="theme-dark" id="themeDarkText">Oscuro</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Language Control -->
+                        <div class="settings-section">
+                            <div class="language-selector">
+                                <label class="radio-option">
+                                    <input type="radio" name="language" value="es" checked>
+                                    <span class="radio-custom"></span>
+                                    <span class="radio-label">Español</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="language" value="en">
+                                    <span class="radio-custom"></span>
+                                    <span class="radio-label">English</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -86,7 +119,7 @@
 
         <!-- Visualizador de Implementaciones Unificado -->
         <div class="implementation-visualizer">
-            <div id="visualizerTitle" class="visualizer-title">Visualización de Implementaciones en Tipos de Datos Abstractos (TDA)</div>
+            <div id="visualizerTitle" class="visualizer-title">Visualización de Implementaciones en TDA</div>
             
             <div class="implementations-container">
                 <!-- Implementación Estática (ArrayList) -->
@@ -108,7 +141,7 @@
         </div>
     </div>
 
-    <script src="js/script.js?v=3"></script>
+    <script src="js/script.js?v=12"></script>
   <footer class="footer">
     <a id="githubLink" href="https://github.com/ANONIMO432HZ" target="_blank" rel="noopener noreferrer" aria-label="Perfil de GitHub" title="GitHub">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">

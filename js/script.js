@@ -32,10 +32,7 @@
     const btnPush = document.getElementById('btnPush');
     const btnPop = document.getElementById('btnPop');
     const btnClear = document.getElementById('btnClear');
-    const btnTheme = document.getElementById('btnTheme');
     const inputError = document.getElementById('inputError');
-    const langSelect = document.getElementById('langSelect');
-    const labelLang = document.getElementById('labelLang');
     const titleEl = document.getElementById('title');
     const labelMode = document.getElementById('labelMode');
     const labelSize = document.getElementById('labelSize');
@@ -46,8 +43,17 @@
     const labelGithub = document.getElementById('labelGithub');
     const starRepoLink = document.getElementById('starRepoLink');
     const DEFAULT_GITHUB_URL = 'https://github.com/ANONIMO432HZ';
-    const langBtn = document.getElementById('langBtn');
-    const langMenu = document.getElementById('langMenu');
+    
+    // Settings panel elements
+    const btnSettings = document.getElementById('btnSettings');
+    const settingsPanel = document.getElementById('settingsPanel');
+    const themeToggle = document.getElementById('themeToggle');
+    const languageRadios = document.querySelectorAll('input[name="language"]');
+    const settingsTitle = document.getElementById('settingsTitle');
+    const labelTheme = document.getElementById('labelTheme');
+    const labelLanguage = document.getElementById('labelLanguage');
+    const themeLightText = document.getElementById('themeLightText');
+    const themeDarkText = document.getElementById('themeDarkText');
     // Botones secundarios declarados temprano para que existan antes de applyLang
     const btnUndo = document.getElementById('btnUndo');
     const btnRedo = document.getElementById('btnRedo');
@@ -103,7 +109,7 @@
     function loadProject(){ try { return localStorage.getItem(PROJECT_KEY); } catch(_) { return null; } }
 
     // Tema (claro/oscuro)
-    function getCurrentLang(){ return loadLang() || (langSelect && langSelect.value) || 'es'; }
+    function getCurrentLang(){ return loadLang() || 'es'; }
 
     function updateThemeMeta(theme){
         const meta = document.querySelector('meta[name="theme-color"]');
@@ -112,15 +118,17 @@
         }
     }
 
-    function updateThemeButton(dict){
-        if (!btnTheme) return;
+    function updateSettingsUI(dict){
+        // Update settings panel texts
+        if (settingsTitle) settingsTitle.textContent = dict.settings;
+        if (labelTheme) labelTheme.textContent = dict.theme;
+        if (labelLanguage) labelLanguage.textContent = dict.lang;
+        if (themeLightText) themeLightText.textContent = dict.themeLight;
+        if (themeDarkText) themeDarkText.textContent = dict.themeDark;
+        
+        // Update theme toggle state
         const isDark = document.documentElement.classList.contains('theme-dark');
-        const title = isDark ? dict.themeLight : dict.themeDark;
-        btnTheme.setAttribute('aria-label', title);
-        btnTheme.title = title;
-        const sun = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6.76 4.84l-1.8-1.79L3.17 4.84l1.79 1.8 1.8-1.8zm10.48 14.32l1.79 1.8 1.79-1.8-1.79-1.79-1.79 1.79zM12 4V1h-0v3h0zm0 19v-3h0v3h0zM4 12H1v0h3v0zm19 0h-3v0h3v0zM6.76 19.16l-1.8 1.8-1.8-1.8 1.8-1.79 1.8 1.79zM19.16 6.64l1.8-1.8-1.8-1.8-1.79 1.8 1.79 1.8zM12 6a6 6 0 100 12 6 6 0 000-12z"/></svg>';
-        const moon = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21.64 13.64A9 9 0 1110.36 2.36 7 7 0 1021.64 13.64z"/></svg>';
-        btnTheme.innerHTML = isDark ? sun : moon;
+        if (themeToggle) themeToggle.checked = isDark;
     }
 
     function applyTheme(theme){
@@ -133,7 +141,35 @@
         updateThemeMeta(theme);
         const lang = getCurrentLang();
         const dict = getDict(lang);
-        updateThemeButton(dict);
+        updateSettingsUI(dict);
+        saveTheme(theme);
+    }
+
+    // Settings panel functionality
+    function toggleSettingsPanel() {
+        const isOpen = btnSettings.getAttribute('aria-expanded') === 'true';
+        btnSettings.setAttribute('aria-expanded', !isOpen);
+        settingsPanel.classList.toggle('hidden', isOpen);
+    }
+
+    function closeSettingsPanel() {
+        btnSettings.setAttribute('aria-expanded', 'false');
+        settingsPanel.classList.add('hidden');
+    }
+
+    function handleThemeToggle() {
+        const newTheme = themeToggle.checked ? 'dark' : 'light';
+        applyTheme(newTheme);
+    }
+
+    function handleLanguageChange(newLang) {
+        saveLang(newLang);
+        applyLang(newLang); // Pass language directly, not dict
+        
+        // Update language radio buttons
+        languageRadios.forEach(radio => {
+            radio.checked = radio.value === newLang;
+        });
     }
 
     function initTheme(){
@@ -518,8 +554,10 @@
                 arrayTitle: 'ArrayList',
                 linkedTitle: 'Lista Enlazada',
                 push: 'Push', pop: 'Pop', clear: 'Limpiar Todo', update: 'Aplicar',
-                themeDark: 'Modo oscuro',
-                themeLight: 'Modo claro',
+                settings: 'Configuraciones',
+                theme: 'Tema:',
+                themeDark: 'Oscuro',
+                themeLight: 'Claro',
                 github: 'Mi GitHub',
                 project: 'Proyecto',
                 tooltipGithub: 'Abrir GitHub',
@@ -555,8 +593,10 @@
                 arrayTitle: 'ArrayList',
                 linkedTitle: 'Linked List',
                 push: 'Push', pop: 'Pop', clear: 'Clear All', update: 'Apply',
-                themeDark: 'Dark mode',
-                themeLight: 'Light mode',
+                settings: 'Settings',
+                theme: 'Theme:',
+                themeDark: 'Dark',
+                themeLight: 'Light',
                 github: 'My GitHub',
                 project: 'Project',
                 tooltipGithub: 'Open GitHub',
@@ -602,35 +642,59 @@
         if (btnPop) btnPop.textContent = dict.pop;
         if (btnClear) btnClear.textContent = dict.clear;
         if (btnUpdateCapacity) btnUpdateCapacity.textContent = dict.update;
-        updateThemeButton(dict);
-        if (labelGithub) labelGithub.textContent = dict.github;
         if (githubLink) githubLink.title = dict.tooltipGithub;
         if (starRepoLink) starRepoLink.title = dict.tooltipStar;
-        if (labelLang) labelLang.textContent = dict.lang;
         if (btnUndo) btnUndo.textContent = dict.undo;
         if (btnRedo) btnRedo.textContent = dict.redo;
         if (btnExport) btnExport.textContent = dict.export;
         if (btnImport) btnImport.textContent = dict.import;
         if (btnReset) btnReset.textContent = dict.reset;
         if (elementInput) elementInput.placeholder = dict.placeholder;
-        const optEs = langSelect && langSelect.querySelector('option[value="es"]');
-        const optEn = langSelect && langSelect.querySelector('option[value="en"]');
-        if (optEs) optEs.textContent = 'Español';
-        if (optEn) optEn.textContent = 'English';
-        if (langBtn) langBtn.textContent = lang === 'en' ? 'English' : 'Español';
-        const capEmpty = dict.empty;
-        const capWith = dict.withElements;
-        if (stackStatus) stackStatus.textContent = state.stack.length === 0 ? capEmpty : capWith;
+        updateSettingsUI(dict);
+        
+        // Update stack visual with new language
+        updateStackVisual();
+        
+        // Save language preference
+        saveLang(lang);
     }
 
-    if (btnTheme){
-        btnTheme.addEventListener('click', () => {
-            const isDark = document.documentElement.classList.contains('theme-dark');
-            const next = isDark ? 'light' : 'dark';
-            applyTheme(next);
-            saveTheme(next);
+    // Settings panel events
+    if (btnSettings) {
+        btnSettings.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleSettingsPanel();
         });
     }
+
+    // Theme toggle
+    if (themeToggle) {
+        themeToggle.addEventListener('change', handleThemeToggle);
+    }
+
+    // Language radio buttons
+    languageRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            if (radio.checked) {
+                handleLanguageChange(radio.value);
+            }
+        });
+    });
+
+    // Close settings panel when clicking outside
+    document.addEventListener('click', (e) => {
+        if (settingsPanel && !settingsPanel.contains(e.target) && !btnSettings.contains(e.target)) {
+            closeSettingsPanel();
+        }
+    });
+
+    // Close settings panel on escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && btnSettings.getAttribute('aria-expanded') === 'true') {
+            closeSettingsPanel();
+            btnSettings.focus();
+        }
+    });
 
     // Permitir configurar el link de GitHub con Ctrl+G (opcional)
     document.addEventListener('keydown', (e) => {
@@ -673,162 +737,22 @@
     }
 
     function setLangUI(lang){
-        if (langSelect) langSelect.value = lang;
-        if (langBtn) {
-            langBtn.textContent = lang === 'en' ? 'English' : 'Español';
-            langBtn.appendChild(document.createElement('span'));
-        }
-       
-        if (langMenu){
-            langMenu.querySelectorAll('li').forEach(li => {
-                li.setAttribute('aria-selected', li.dataset.lang === lang ? 'true' : 'false');
-            });
-        }
-    }
-
-    // Portal del menú a body para evitar ser tapado por otras capas
-    let langMenuOriginalParent = null;
-    let langMenuScrollHandler = null;
-    function positionLangMenu(){
-        if (!langBtn || !langMenu) return;
-        const wasHidden = langMenu.classList.contains('hidden');
-        if (wasHidden) langMenu.classList.remove('hidden');
-
-        // calcular posición base debajo del botón
-        const btnRect = langBtn.getBoundingClientRect();
-        const top = btnRect.bottom + window.scrollY + 6;
-        let left = btnRect.left + window.scrollX;
-
-       
-        let idealWidth = 0;
-        const items = langMenu.querySelectorAll('li');
-        items.forEach(li => {
-            const w = li.getBoundingClientRect().width;
-            if (w > idealWidth) idealWidth = w;
-        });
-       
-        idealWidth = Math.ceil(idealWidth + 16);
-       
-        const maxWidth = Math.min(window.innerWidth - 24, 260);
-        idealWidth = Math.max(120, Math.min(idealWidth, maxWidth));
-
-        langMenu.style.width = `${idealWidth}px`;
-        langMenu.style.minWidth = '';
-        langMenu.style.position = 'absolute';
-        langMenu.style.zIndex = '9999';
-        langMenu.style.top = `${top}px`;
-
-       
-        const right = left + idealWidth;
-        const overflow = right - (window.scrollX + window.innerWidth - 12);
-        if (overflow > 0) {
-            left = Math.max(12 + window.scrollX, left - overflow);
-        }
-        langMenu.style.left = `${left}px`;
-
-        if (wasHidden) langMenu.classList.add('hidden');
-    }
-    function attachLangMenuPortal(){
-        if (!langMenu || langMenuOriginalParent) return;
-        langMenuOriginalParent = langMenu.parentElement; // .dropdown
-        document.body.appendChild(langMenu);
-        positionLangMenu();
-        langMenuScrollHandler = () => positionLangMenu();
-        window.addEventListener('scroll', langMenuScrollHandler, true);
-        window.addEventListener('resize', langMenuScrollHandler, true);
-    }
-    function detachLangMenuPortal(){
-        if (!langMenu) return;
-        if (langMenuOriginalParent){
-            langMenu.style.position = '';
-            langMenu.style.top = '';
-            langMenu.style.left = '';
-            langMenu.style.zIndex = '';
-            langMenuOriginalParent.appendChild(langMenu);
-            langMenuOriginalParent = null;
-        }
-        if (langMenuScrollHandler){
-            window.removeEventListener('scroll', langMenuScrollHandler, true);
-            window.removeEventListener('resize', langMenuScrollHandler, true);
-            langMenuScrollHandler = null;
-        }
-    }
-    function openLangMenu(){ if (langMenu){ attachLangMenuPortal(); langMenu.classList.remove('hidden'); if (langBtn) langBtn.setAttribute('aria-expanded','true'); } }
-    function closeLangMenu(){ if (langMenu){ langMenu.classList.add('hidden'); if (langBtn) langBtn.setAttribute('aria-expanded','false'); detachLangMenuPortal(); } }
-
-    function getLangItems(){ return Array.from(langMenu ? langMenu.querySelectorAll('li[role="option"]') : []); }
-    function focusItem(index){ const items = getLangItems(); if (!items.length) return; const i = Math.max(0, Math.min(items.length-1, index)); items[i].focus(); }
-    function getFocusedIndex(){ const items = getLangItems(); return items.findIndex(el => el === document.activeElement); }
-
-    if (langBtn){
-        langBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const willOpen = langMenu && langMenu.classList.contains('hidden');
-            if (willOpen){ openLangMenu(); focusItem(0); } else { closeLangMenu(); }
-        });
-        langBtn.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' '){
-                e.preventDefault();
-                openLangMenu();
-                focusItem(0);
-            } else if (e.key === 'Escape'){
-                closeLangMenu();
-            }
+        // Update language radio buttons to reflect current selection
+        languageRadios.forEach(radio => {
+            radio.checked = radio.value === lang;
         });
     }
-    if (langMenu){
-        langMenu.addEventListener('click', (e) => {
-            const li = e.target.closest('li');
-            if (!li) return;
-            const lng = li.dataset.lang;
-            applyLang(lng);
-            saveLang(lng);
-            setLangUI(lng);
-            closeLangMenu();
-            langBtn && langBtn.focus();
-        });
-        langMenu.addEventListener('keydown', (e) => {
-            const items = getLangItems();
-            if (!items.length) return;
-            let idx = getFocusedIndex();
-            if (e.key === 'ArrowDown'){
-                e.preventDefault();
-                focusItem(idx < 0 ? 0 : idx + 1);
-            } else if (e.key === 'ArrowUp'){
-                e.preventDefault();
-                focusItem(idx <= 0 ? items.length - 1 : idx - 1);
-            } else if (e.key === 'Home'){
-                e.preventDefault();
-                focusItem(0);
-            } else if (e.key === 'End'){
-                e.preventDefault();
-                focusItem(items.length - 1);
-            } else if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                const li = document.activeElement && document.activeElement.closest('li[role="option"]');
-                if (li){
-                    const lng = li.dataset.lang;
-                    applyLang(lng);
-                    saveLang(lng);
-                    setLangUI(lng);
-                    closeLangMenu();
-                    langBtn && langBtn.focus();
-                }
-            } else if (e.key === 'Escape'){
-                e.preventDefault();
-                closeLangMenu();
-                langBtn && langBtn.focus();
-            }
-        });
-    }
-    document.addEventListener('click', () => closeLangMenu());
 
-    if (langSelect){
-        const savedLang = loadLang() || 'es';
-        applyLang(savedLang);
-        setLangUI(savedLang);
-        langSelect.addEventListener('change', () => { applyLang(langSelect.value); saveLang(langSelect.value); setLangUI(langSelect.value); });
-    }
+    // Language functionality is now handled by radio buttons in settings panel
+
+    // Initialize language
+    const savedLang = loadLang() || 'es';
+    applyLang(savedLang);
+    
+    // Set radio buttons to match saved language
+    languageRadios.forEach(radio => {
+        radio.checked = radio.value === savedLang;
+    });
 
     // Inicialización
     initTheme();
@@ -845,7 +769,7 @@
     // Registrar Service Worker con versionado
     if ('serviceWorker' in navigator && (location.protocol === 'http:' || location.protocol === 'https:')) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js?v=4').catch(() => {});
+            navigator.serviceWorker.register('/sw.js?v=12').catch(() => {});
         });
     }
 })();

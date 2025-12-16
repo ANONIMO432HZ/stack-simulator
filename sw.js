@@ -1,4 +1,4 @@
-const CACHE_NAME = 'stack-sim-v4';
+const CACHE_NAME = 'stack-sim-v12';
 const ASSETS = [
   '/',
   '/index.html',
@@ -9,7 +9,7 @@ const ASSETS = [
   '/icons/android-chrome-192x192.png',
   '/icons/android-chrome-512x512.png',
   '/icons/apple-touch-icon.png',
-  '/icons/site.webmanifest'
+  '/manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
