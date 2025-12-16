@@ -12,10 +12,7 @@
 
 ## 🔥 Demo en vivo
 Visita la demo desplegada:
-➡️ https://stack-simulator.netlify.app/
-
-![Demo placeholder](https://via.placeholder.com/900x260.png?text=Stack+Simulator+Live+Demo)  
-(Reemplaza esta imagen por un GIF real en `docs/demo.gif` o `assets/demo.gif` para mostrar la simulación en acción.)
+https://stack-simulator.netlify.app/
 
 ---
 
