@@ -15,6 +15,7 @@ https://stack-simulator.netlify.app/
 
 ---
 
+```
 ## 📁 Estructura principal
 /stack-simulator
 ├── 📄 index.html
@@ -33,6 +34,8 @@ https://stack-simulator.netlify.app/
 │       └── custom-font.woff2
 ├── ⚡ sw.js
 └── 📜 LICENSE
+```
+
 ---
 
 ## ✨ Características
