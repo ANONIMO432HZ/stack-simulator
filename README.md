@@ -95,16 +95,5 @@ Pautas:
 
 ---
 
-## 🔗 Enlaces rápidos
-- Repositorio: [ANONIMO432HZ/stack-simulator](https://github.com/ANONIMO432HZ/stack-simulator)  
-- Demo en vivo: https://stack-simulator.netlify.app/  
-- Archivo principal: [index.html](https://github.com/ANONIMO432HZ/stack-simulator/blob/main/index.html)  
-- Directorios: [css/](https://github.com/ANONIMO432HZ/stack-simulator/tree/main/css) · [js/](https://github.com/ANONIMO432HZ/stack-simulator/tree/main/js) · [icons/](https://github.com/ANONIMO432HZ/stack-simulator/tree/main/icons)  
-- Service Worker: [sw.js](https://github.com/ANONIMO432HZ/stack-simulator/blob/main/sw.js)  
-- Issues: [Abrir/Ver Issues](https://github.com/ANONIMO432HZ/stack-simulator/issues)  
-- PRs: [Pull Requests](https://github.com/ANONIMO432HZ/stack-simulator/pulls)
-
----
-
-## 📄 Licencia
-MIT [LICENSE](https://github.com/ANONIMO432HZ/stack-simulator/blob/main/LICENSE).
+## 📄 Licencia MIT
+[LICENSE](https://github.com/ANONIMO432HZ/stack-simulator/blob/main/LICENSE)
