@@ -199,4 +199,4 @@ MIT License - Libre para uso personal y comercial
 5. Abre un Pull Request
 
 ---
-Desarrollado con ❤️ para la educación en estructuras de datos
+Desarrollado con ❤️ para la comunidad educativa
