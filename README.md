@@ -15,8 +15,8 @@ https://stack-simulator.netlify.app/
 
 ---
 
-```
 ## 📁 Estructura principal
+```
 /stack-simulator
 ├── 📄 index.html
 ├── 📄 README.md
