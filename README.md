@@ -4,7 +4,6 @@
 ![Stars](https://img.shields.io/github/stars/ANONIMO432HZ/stack-simulator?style=social) 
 ![Issues](https://img.shields.io/github/issues/ANONIMO432HZ/stack-simulator) 
 ![License](https://img.shields.io/github/license/ANONIMO432HZ/stack-simulator)
-![Netlify](https://img.shields.io/badge/Live%20Demo-Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)
 
 ¡Bienvenido a Stack Simulator! Una visualización interactiva y educativa de una pila (stack) construida con HTML, CSS y JavaScript. Ideal para estudiantes, profesores y cualquier persona que quiera entender las operaciones básicas de una pila mediante animaciones claras.
 
@@ -17,13 +16,23 @@ https://stack-simulator.netlify.app/
 ---
 
 ## 📁 Estructura principal
-- 📄 [index.html](https://github.com/ANONIMO432HZ/stack-simulator/blob/main/index.html) — Interfaz principal y demo.
-- 🎨 [css/](https://github.com/ANONIMO432HZ/stack-simulator/tree/main/css) — Estilos.
-- 🧩 [js/](https://github.com/ANONIMO432HZ/stack-simulator/tree/main/js) — Lógica y animaciones.
-- 🖼️ [icons/](https://github.com/ANONIMO432HZ/stack-simulator/tree/main/icons) — Recursos gráficos.
-- ⚡ [sw.js](https://github.com/ANONIMO432HZ/stack-simulator/blob/main/sw.js) — Service worker (PWA / caching).
-- 📜 [LICENSE](https://github.com/ANONIMO432HZ/stack-simulator/blob/main/LICENSE) — Licencia MIT.
-
+/stack-simulator
+├── 📄 index.html
+├── 📄 README.md
+├── 🎨 css/
+│   ├── 📄 style.css
+│   └── 📄 utilities.css
+├── 🧩 js/
+│   ├── 📄 main.js
+│   └── 📄 components.js
+├── 🖼️ assets/
+│   ├── 🏞️ img/
+│   │   ├── logo.png
+│   │   └── background.jpg
+│   └── 🔠 fonts/
+│       └── custom-font.woff2
+├── ⚡ sw.js
+└── 📜 LICENSE
 ---
 
 ## ✨ Características
@@ -48,10 +57,7 @@ Opciones rápidas:
    - Opción rápida: abrir `index.html` directamente en el navegador (útil para pruebas estáticas).
    - Opción recomendada (servidor local):
      - Python 3: `python -m http.server 8000` → http://localhost:8000/
-     - Node: `npx serve .` → usa la URL que indique la herramienta
-
-4. (Opcional) Despliegue: puedes usar Netlify, Vercel o GitHub Pages para publicar la demo (ya está desplegada en Netlify).
-
+       
 ---
 
 ## ▶️ Uso (interfaz)
@@ -101,4 +107,4 @@ Pautas:
 ---
 
 ## 📄 Licencia
-MIT — ver [LICENSE](https://github.com/ANONIMO432HZ/stack-simulator/blob/main/LICENSE).
+MIT [LICENSE](https://github.com/ANONIMO432HZ/stack-simulator/blob/main/LICENSE).
